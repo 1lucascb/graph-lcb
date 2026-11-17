@@ -102,6 +102,7 @@ graph add-node stock-api "Stock API" API --p.language=Go
 graph add-edge orders-api CALLS stock-api --description "Checks stock" --p.call_kind=synchronous --p.protocol=HTTP
 graph traverse orders-api --depth=2 --direction=out
 graph status                                 # size, orphans, missing evidence
+graph summary                                # compact overview and top connected nodes
 ```
 
 For anything beyond a handful of records, switch to the batch workflow in `references/batch_imports.md` and keep `batches/PROGRESS.md` up to date.
@@ -114,6 +115,7 @@ For anything beyond a handful of records, switch to the batch workflow in `refer
 | `contract [entities\|edges] [--compact]` | Show contracts | Works before init |
 | `validate` | Check contracts and records | Read-only; exit 3 invalid, 4 unavailable |
 | `status [--check=...] [--limit N] [--strict]` | Totals and quality findings | Orphans, missing evidence/description, components |
+| `summary` | Compact overview of graph size and health | `top_nodes_by_edges` rows are `[node_id, amount_edges]` tuples |
 | `import FILE [--on-conflict=...] [--dry-run]` | Bulk load JSONL | Atomic; any invalid line aborts everything |
 | `add-node ID NAME TYPE` | Create a node | ID matches `^[a-z0-9][a-z0-9._-]*$` |
 | `add-edge SRC TYPE TGT` | Create an edge | Duplicates rejected; parallel edges need a description |

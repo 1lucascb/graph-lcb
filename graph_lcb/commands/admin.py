@@ -87,6 +87,60 @@ def graph_status(ctx: Context) -> int:
     )
     return 3 if strict is True and has_findings else 0
 
+
+@cli.handler("summary", "Give a compact overview of graph size, structure, and health.")
+def graph_summary(ctx: Context) -> None:
+    if ctx.args or ctx._options:
+        raise CLIError("summary accepts no arguments or options")
+
+    graph = Graph(allow_invalid_contracts=True)
+    data = graph.load()
+    nodes = data["nodes"]
+    edges = data["edges"]
+    incident = {node.id: 0 for node in nodes}
+    for edge in edges:
+        if edge.source in incident:
+            incident[edge.source] += 1
+        if edge.target in incident:
+            incident[edge.target] += 1
+
+    node_by_id = {node.id: node for node in nodes}
+    connected = {node_id for edge in edges for node_id in (edge.source, edge.target)
+                 if node_id in node_by_id}
+    # Count connected components over nodes participating in valid-endpoint edges.
+    parent = {node_id: node_id for node_id in connected}
+    def find(node_id: str) -> str:
+        while parent[node_id] != node_id:
+            parent[node_id] = parent[parent[node_id]]
+            node_id = parent[node_id]
+        return node_id
+    for edge in edges:
+        if edge.source in parent and edge.target in parent:
+            left, right = find(edge.source), find(edge.target)
+            if left != right:
+                parent[right] = left
+
+    validation = graph.validate()
+    result = {
+        "nodes": {"total": len(nodes), "contracts": len(graph.entities)},
+        "edges": {"total": len(edges), "contracts": len(graph.edge_types)},
+        "top_nodes_by_edges": [
+            [node_id, count]
+            for node_id, count in sorted(incident.items(), key=lambda item: (-item[1], item[0]))[:5]
+        ],
+        "health": {
+            "valid": validation["valid"],
+            "validation_errors": validation["summary"]["errors"],
+            "orphan_nodes": sum(count == 0 for count in incident.values()),
+            "components": len({find(node_id) for node_id in connected}),
+            "nodes_without_evidence": sum(not node.evidences for node in nodes),
+            "edges_without_evidence": sum(not edge.evidences for edge in edges),
+            "nodes_without_description": sum(not node.description.strip() for node in nodes),
+            "edges_without_description": sum(not edge.description.strip() for edge in edges),
+        },
+    }
+    emit(result)
+
 @cli.handler("contract", "Show entity and edge contracts: contract [entities|edges] [--compact]")
 def show_schema(ctx: Context) -> None:
     if len(ctx.args) > 1:

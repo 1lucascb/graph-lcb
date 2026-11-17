@@ -335,6 +335,22 @@ Example:
 graph status --check=orphans,no-evidence --limit=5 --strict
 ```
 
+### `graph summary`
+
+```text
+graph summary
+```
+
+Print a read-only overview for agents: node and edge totals, entity and edge
+contract type counts, the five nodes with the most incident edges, and health
+counts for validation errors, orphan nodes, connected components, missing
+evidence, and missing descriptions. `top_nodes_by_edges` is an array of
+two-item tuples `[node_id, amount_edges]`, ordered by edge count descending
+with node ID as the tie breaker; each edge counts once for each endpoint.
+Validation problems are reported in the summary and do not prevent it from
+running. The command requires an initialized workspace; a missing `graph.json`
+is treated as an empty graph.
+
 ### `graph import`
 
 ```text
