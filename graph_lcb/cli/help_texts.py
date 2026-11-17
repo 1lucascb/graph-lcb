@@ -1,4 +1,23 @@
 _RAW = {
+    "summary": r"""
+graph summary - Give agents a compact overview of graph size and health
+
+USAGE
+  graph summary
+
+OUTPUT
+  Node and edge totals and contract type counts; the five nodes with the most incident edges;
+  and health counts for validation errors, orphan nodes, connected components, missing evidence,
+  and missing descriptions.
+  Top-node ties are ordered by node ID. Each edge contributes once to each endpoint's count.
+
+NOTES
+  Read-only and requires an initialized workspace. A missing graph.json is treated as an empty graph.
+  Validation problems are included in the output; they do not prevent the summary from being returned.
+
+EXAMPLE
+  graph summary
+""",
     "status": r"""
 graph status - Summarize graph size and data-quality findings
 

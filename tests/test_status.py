@@ -125,3 +125,70 @@ def test_status_requires_initialized_workspace(tmp_path: Path) -> None:
 
     assert result.returncode == 2
     assert "not initialized" in result.stderr
+
+
+def test_summary_reports_totals_contracts_top_nodes_and_health(tmp_path: Path) -> None:
+    directory = _workspace(tmp_path)
+    (directory / "graph.json").write_text(json.dumps({
+        "nodes": [
+            {"id": "alone", "type": "API", "name": "Alone", "description": "Has no links",
+             "evidences": [{"source": "a.py"}]},
+            {"id": "b", "type": "API", "name": "B", "description": "B",
+             "evidences": [{"source": "b.py"}]},
+            {"id": "a", "type": "API", "name": "A"},
+            {"id": "c", "type": "API", "name": "C"},
+        ],
+        "edges": [
+            {"id": "e1", "type": "LINK", "source": "a", "target": "b", "description": "ab",
+             "evidences": [{"source": "ab.py"}]},
+            {"id": "e2", "type": "LINK", "source": "a", "target": "c", "description": "ac",
+             "evidences": [{"source": "ac.py"}]},
+        ],
+    }), encoding="utf-8")
+
+    result = _invoke(tmp_path, "summary")
+
+    assert result.returncode == 0
+    assert json.loads(result.stdout) == {
+        "nodes": {"total": 4, "contracts": 1},
+        "edges": {"total": 2, "contracts": 1},
+        "top_nodes_by_edges": [
+            ["a", 2],
+            ["b", 1],
+            ["c", 1],
+            ["alone", 0],
+        ],
+        "health": {
+            "valid": True,
+            "validation_errors": 0,
+            "orphan_nodes": 1,
+            "components": 1,
+            "nodes_without_evidence": 2,
+            "edges_without_evidence": 0,
+            "nodes_without_description": 2,
+            "edges_without_description": 0,
+        },
+    }
+
+
+def test_summary_missing_store_is_empty(tmp_path: Path) -> None:
+    _workspace(tmp_path, with_store=False)
+
+    result = _invoke(tmp_path, "summary")
+
+    assert result.returncode == 0
+    assert json.loads(result.stdout) == {
+        "nodes": {"total": 0, "contracts": 1},
+        "edges": {"total": 0, "contracts": 1},
+        "top_nodes_by_edges": [],
+        "health": {
+            "valid": True,
+            "validation_errors": 0,
+            "orphan_nodes": 0,
+            "components": 0,
+            "nodes_without_evidence": 0,
+            "edges_without_evidence": 0,
+            "nodes_without_description": 0,
+            "edges_without_description": 0,
+        },
+    }
