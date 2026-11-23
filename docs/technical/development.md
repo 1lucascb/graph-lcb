@@ -13,6 +13,10 @@ To try the source-tree executable, run `python graph help COMMAND`. Run
 `graph init` only in the intended project or a disposable directory because it
 creates `.graph/` in the current working directory.
 
+> [!CAUTION]
+> `graph init` writes workspace files relative to the current directory. Check
+> your working directory before running it.
+
 ## Source map
 
 | Location | Responsibility |
