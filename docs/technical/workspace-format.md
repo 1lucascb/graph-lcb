@@ -4,6 +4,10 @@ A graph workspace is scoped to the process's current working directory. The
 CLI does not locate a workspace relative to its installation path. Run
 commands from the project whose `.graph/` directory you intend to use.
 
+> [!NOTE]
+> The same installed `graph` command can operate on different workspaces; the
+> directory you launch it from determines which graph it reads and writes.
+
 ## Files
 
 | Path | Role |
@@ -91,6 +95,10 @@ Graph operations use the current contracts to check record types, property
 names and values, required properties, edge endpoint existence, and endpoint
 type compatibility. `graph validate` reports contract and record violations
 without changing files. A missing `graph.json` counts as an empty graph.
+
+> [!IMPORTANT]
+> Treat the contracts as part of the workspace's data model. Changing them can
+> make existing records invalid, so run `graph validate` after contract edits.
 
 Additional integrity behavior includes:
 

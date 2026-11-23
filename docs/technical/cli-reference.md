@@ -109,6 +109,10 @@ combines positive terms with AND; `--any` changes that to OR. Regex search
 uses Python's regular-expression engine without a timeout, and scans records
 linearly, so use narrow fields or filters for large graphs.
 
+> [!WARNING]
+> A complex regular expression can take a long time on large inputs. Prefer
+> narrow fields and filters when querying a large graph.
+
 `traverse` performs breadth-first traversal from one node. `path` finds simple
 paths, ordered shortest-first. Both accept edge-type filters and direction
 controls. Path enumeration may be expensive on dense graphs; bound it with
