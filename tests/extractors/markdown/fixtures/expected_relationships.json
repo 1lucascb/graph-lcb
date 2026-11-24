@@ -1,0 +1,42 @@
+[
+  {
+    "source": "FILE:README.md",
+    "target": "FILE:docs/guide.md",
+    "kind": "REFERENCES",
+    "file": "README.md",
+    "location": null,
+    "metadata": {
+      "reference_type": "markdown_link",
+      "link_text": "guide",
+      "target_path": "docs/guide.md"
+    },
+    "record_type": "RELATIONSHIP"
+  },
+  {
+    "source": "FILE:README.md",
+    "target": "https://example.com/reference",
+    "kind": "REFERENCES",
+    "file": "README.md",
+    "location": null,
+    "metadata": {
+      "reference_type": "markdown_url",
+      "resolution": "EXTERNAL",
+      "link_text": "online reference",
+      "url": "https://example.com/reference"
+    },
+    "record_type": "RELATIONSHIP"
+  },
+  {
+    "source": "FILE:README.md",
+    "target": "https://example.org/api",
+    "kind": "REFERENCES",
+    "file": "README.md",
+    "location": null,
+    "metadata": {
+      "reference_type": "markdown_url",
+      "resolution": "EXTERNAL",
+      "url": "https://example.org/api"
+    },
+    "record_type": "RELATIONSHIP"
+  }
+]

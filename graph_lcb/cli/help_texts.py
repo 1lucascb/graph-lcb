@@ -189,6 +189,29 @@ EXAMPLES
   graph import records.jsonl --on-conflict=replace
   cat records.jsonl | graph import -
 """,
+    "extract": r"""
+graph extract - Extract Markdown files into an independent JSONL snapshot
+
+USAGE
+  graph extract ROOT_PATH markdown
+
+ARGUMENTS
+  ROOT_PATH   Directory to scan recursively for .md files
+  markdown    The Markdown extractor (the only supported extractor currently)
+
+OUTPUT
+  JSON containing the snapshot directory and paths to manifest.json,
+  entities.jsonl, and relationships.jsonl. Entity and relationship records use
+  the extractor contract and do not depend on graph workspace contracts.
+
+NOTES
+  Each run gets a new directory under .graph/extractions/markdown/ using a
+  UTC timestamp such as 2026-11-21T000000Z.
+  Markdown entity IDs are deterministic: FILE:<root-relative-path>.
+
+EXAMPLE
+  graph extract . markdown
+""",
     "add-node": r"""
 graph add-node - Create a node
 

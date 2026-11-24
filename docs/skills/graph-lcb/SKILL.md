@@ -41,6 +41,7 @@ Four habits make graphs built with this tool precise and trustworthy:
 | Answering questions from an existing graph, tracing dependencies, finding paths, being precise with filters | [references/query.md](references/query.md) |
 | Looking for a phrase when you don't know where it lives (names, descriptions, evidence text, file paths) | [references/search.md](references/search.md) |
 | Loading many nodes and edges, preparing JSONL, dry runs, conflicts, handing work between agents | [references/batch_imports.md](references/batch_imports.md) |
+| Quickly discovering facts and candidate relationships with source extractors | [references/extractors.md](references/extractors.md) |
 | Building a contract for a new graph (with the user or from observation), adapting a template, extending the contract, or fixing a graph that stopped validating | [references/contracts.md](references/contracts.md) |
 | Mapping a codebase, documents, research material, or many repositories into the graph; resuming an unfinished mapping; finding more relationships; deciding granularity | [references/mapping.md](references/mapping.md) |
 | Keeping the graph current after code or documents change, finding stale evidence, refreshing or deleting outdated records, auditing a graph's accuracy | [references/maintenance.md](references/maintenance.md) |

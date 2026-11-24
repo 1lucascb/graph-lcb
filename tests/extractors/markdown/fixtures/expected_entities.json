@@ -1,0 +1,24 @@
+[
+  {
+    "id": "FILE:docs/guide.md",
+    "kind": "FILE",
+    "name": "guide.md",
+    "file": "docs/guide.md",
+    "location": null,
+    "metadata": {
+      "format": "markdown"
+    },
+    "record_type": "ENTITY"
+  },
+  {
+    "id": "FILE:README.md",
+    "kind": "FILE",
+    "name": "README.md",
+    "file": "README.md",
+    "location": null,
+    "metadata": {
+      "format": "markdown"
+    },
+    "record_type": "ENTITY"
+  }
+]
