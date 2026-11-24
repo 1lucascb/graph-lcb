@@ -411,6 +411,39 @@ graph import records.jsonl --dry-run
 cat records.jsonl | graph import -
 ```
 
+### `graph extract`
+
+The Markdown extractor is the **only extractor currently supported**. Tree-sitter
+extraction is not available yet; additional extractors are planned.
+
+```text
+graph extract ROOT_PATH markdown
+```
+
+Recursively scans `ROOT_PATH` for Markdown files and writes an independent
+extractor snapshot under
+`ROOT_PATH/.graph/extractions/markdown/<UTC timestamp>/`, for example
+`ROOT_PATH/.graph/extractions/markdown/2026-11-21T000000Z/`. Each snapshot has
+separate `entities.jsonl` and `relationships.jsonl` files. Records follow the
+extractor's common entity and relationship contracts; they do not use or
+modify the workspace's user-defined graph contracts or `graph.json`.
+Each snapshot also has a `manifest.json` recording the schema and extractor
+versions, timestamp, source directory, detected languages, and entity and
+relationship counts. Markdown snapshots set `tree_sitter_version` to `null`.
+Extractor output is for quick fact retrieval and **must not be imported
+directly**. Adapt verified facts to the current graph contracts before using
+`graph import`; see the graph-lcb skill's extractor and batch import guidance.
+
+Markdown file entities use deterministic IDs in the form
+`FILE:<root-relative-path>`. A file's ID and its link relationship endpoints
+remain the same across runs. Each command run creates a new dated snapshot
+instead of replacing earlier extraction data. The command does not require an
+initialized graph workspace.
+
+```sh
+graph extract . markdown
+```
+
 ### `graph add-node`
 
 ```text
