@@ -23,9 +23,15 @@ class MarkdownExtractor(ExtractorBase):
         root_path = root_path.resolve()
 
         markdown_files = sorted(
-            path for path in root_path.rglob("*")
-            if path.is_file() and path.suffix.lower() in {".md", ".markdown"}
-            and ".graph" not in path.relative_to(root_path).parts
+            (
+                path for path in root_path.rglob("*")
+                if path.is_file() and path.suffix.lower() in {".md", ".markdown"}
+                and ".graph" not in path.relative_to(root_path).parts
+            ),
+            key=lambda path: (
+                path.relative_to(root_path).as_posix().casefold(),
+                path.relative_to(root_path).as_posix(),
+            ),
         )
         for file_path in markdown_files:
             relative_path = file_path.relative_to(root_path).as_posix()
